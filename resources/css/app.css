@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  background-color: #fff;
+  color: #333;
+}
+.navbar, .btn-primary {
+  background-color: #FF6600; /* Orange */
+  color: #fff;
+}
+.card {
+  border: 1px solid #FFD700; /* Yellow */
+}
