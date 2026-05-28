@@ -15,7 +15,7 @@
     <div class="col-lg-5">
         <div class="form-card">
 
-            <form method="POST" action="{{ route('reservations.store') }}">
+            <form id="reservationForm" method="POST">
                 @csrf
 
                 <!-- Table Number -->

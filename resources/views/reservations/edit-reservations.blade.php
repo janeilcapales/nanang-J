@@ -4,6 +4,9 @@
 
 @section('content')
 
+<!-- Alert Container -->
+<div id="alertContainer"></div>
+
 <div class="page-header">
     <h2>Edit Reservation</h2>
     <p>Update the reservation details below</p>
@@ -13,19 +16,19 @@
     <!-- Form -->
     <div class="col-lg-5">
         <div class="form-card">
-            <form method="POST" action="{{ route('reservations.update', $reservation->id) }}">
+            <form id="editReservationForm">
                 @csrf
                 @method('PUT')
 
                 <div class="form-group">
                     <label class="form-label">Table Number *</label>
-                    <input type="text" name="table_number" class="form-control"
+                    <input type="text" name="table_number" id="tableNumber" class="form-control"
                            value="{{ $reservation->table_number }}" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Reservation Date & Time *</label>
-                    <input type="datetime-local" name="reservation_time" class="form-control"
+                    <input type="datetime-local" name="reservation_time" id="reservationTime" class="form-control"
                            value="{{ \Carbon\Carbon::parse($reservation->reservation_time)->format('Y-m-d\TH:i') }}" required>
                 </div>
 
@@ -63,12 +66,13 @@
                 @endif
 
                 <div style="display:flex;gap:12px;">
-                    <button type="submit" class="btn-primary" style="flex:1;">
-                        <i class="fa-solid fa-check"></i> Update Reservation
+                    <button type="submit" class="btn-primary" id="submitBtn" style="flex:1;">
+                        <span id="btnText"><i class="fa-solid fa-check"></i> Update Reservation</span>
+                        <span id="btnSpinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Updating...</span>
                     </button>
-                    <a href="{{ route('reservations.index') }}" style="padding:11px 20px;border:1.5px solid #e0d5c8;border-radius:9px;font-size:14px;color:#666;text-decoration:none;display:inline-flex;align-items:center;">
+                    <button type="button" id="cancelBtn" style="padding:11px 20px;border:1.5px solid #e0d5c8;border-radius:9px;font-size:14px;color:#666;text-decoration:none;display:inline-flex;align-items:center;background:none;cursor:pointer;">
                         Cancel
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>
@@ -88,7 +92,6 @@
          data-name="{{ $dish->name }}"
          data-price="{{ $dish->price }}"
          data-image="{{ $dish->image ? asset('storage/'.$dish->image) : '' }}"
-         onclick="selectDish(this)"
          style="cursor:pointer;">
 
         @if($dish->image)
@@ -114,28 +117,107 @@
         box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
     }
 </style>
-@endsection
+
 <script>
-function selectDish(el) {
-    const id    = el.dataset.id;
-    const name  = el.dataset.name;
-    const price = el.dataset.price;
-    const image = el.dataset.image;
+$(document).ready(function() {
+    const reservationId = @json($reservation->id);
+    const reservationIndexUrl = '{{ route("reservations.index") }}';
 
-    document.getElementById('dishSelect').value = id;
-    document.getElementById('selectedDishName').textContent = name;
-    document.getElementById('selectedDishPrice').textContent = '₱' + parseFloat(price).toFixed(2);
+    $(document).on('click', '.dish-selectable', function() {
+        const $this = $(this);
+        const id = $this.data('id');
+        const name = $this.data('name');
+        const price = parseFloat($this.data('price')) || 0;
+        const image = $this.data('image');
 
-    const imgEl = document.getElementById('selectedDishImg');
-    if (image) {
-        imgEl.src = image;
-        imgEl.style.display = 'block';
-    } else {
-        imgEl.style.display = 'none';
+        $('#dishSelect').val(id);
+        $('#selectedDishName').text(name);
+        $('#selectedDishPrice').text('₱' + price.toFixed(2));
+
+        const imgEl = $('#selectedDishImg');
+        if (image) {
+            imgEl.attr('src', image).show();
+        } else {
+            imgEl.hide();
+        }
+
+        $('#selectedDishPreview').show();
+        $('.dish-selectable').removeClass('selected');
+        $this.addClass('selected');
+    });
+
+    $('#editReservationForm').on('submit', function(e) {
+        e.preventDefault();
+
+        if (!$('#tableNumber').val() || !$('#reservationTime').val() || !$('#dishSelect').val()) {
+            showAlert('Please fill in all required fields', 'warning');
+            return;
+        }
+
+        const formData = {
+            table_number: $('#tableNumber').val(),
+            reservation_time: $('#reservationTime').val(),
+            dish_id: $('#dishSelect').val(),
+            _token: $('input[name="_token"]').val()
+        };
+
+        $.ajax({
+            url: `/reservations/${reservationId}`,
+            type: 'PUT',
+            data: formData,
+            beforeSend: function() {
+                $('#submitBtn').prop('disabled', true);
+                $('#btnText').hide();
+                $('#btnSpinner').show();
+            },
+            success: function(response) {
+                showAlert(response.message || 'Reservation updated successfully!', 'success');
+
+                setTimeout(function() {
+                    window.location.href = reservationIndexUrl;
+                }, 1500);
+            },
+            error: function(xhr) {
+                let message = 'An error occurred. Please try again.';
+
+                if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                    message = Object.values(xhr.responseJSON.errors).flat().join('<br>');
+                } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                showAlert(message, 'danger');
+                console.error('Update Error:', xhr);
+            },
+            complete: function() {
+                $('#submitBtn').prop('disabled', false);
+                $('#btnText').show();
+                $('#btnSpinner').hide();
+            }
+        });
+    });
+
+    $('#cancelBtn').on('click', function(e) {
+        e.preventDefault();
+        window.location.href = reservationIndexUrl;
+    });
+
+    function showAlert(message, type = 'info') {
+        const alertHtml = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+
+        $('#alertContainer').html(alertHtml);
+
+        if (type !== 'danger') {
+            setTimeout(function() {
+                $('#alertContainer').empty();
+            }, 5000);
+        }
     }
-    document.getElementById('selectedDishPreview').style.display = 'block';
-
-    document.querySelectorAll('.dish-selectable').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-}
+});
 </script>
+@endsection
