@@ -16,6 +16,8 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
+
+
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
 
