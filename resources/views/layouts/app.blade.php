@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Management</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -19,11 +22,15 @@
             --content-bg: #faf8f5;
             --card-bg: #ffffff;
             --border: #e8e0d5;
-            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
             --radius: 14px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -39,23 +46,27 @@
             background: var(--sidebar-bg);
             min-height: 100vh;
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             display: flex;
             flex-direction: column;
             z-index: 100;
-            box-shadow: 4px 0 30px rgba(0,0,0,0.25);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.25);
         }
 
         .sidebar-brand {
             padding: 32px 28px 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .sidebar-brand .logo-icon {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             background: var(--accent);
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 20px;
             margin-bottom: 12px;
         }
@@ -118,7 +129,9 @@
         .nav-link-item.active::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
             width: 3px;
             background: var(--accent);
             border-radius: 0 3px 3px 0;
@@ -127,7 +140,7 @@
         .sidebar-footer {
             margin-top: auto;
             padding: 20px 28px;
-            border-top: 1px solid rgba(255,255,255,0.07);
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .user-badge {
@@ -137,10 +150,13 @@
         }
 
         .user-avatar {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, var(--accent), var(--accent-gold));
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
             color: white;
             font-weight: 600;
@@ -234,29 +250,49 @@
 
         .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
         .stat-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
             background: linear-gradient(90deg, var(--accent), var(--accent-gold));
         }
 
         .stat-icon {
-            width: 48px; height: 48px;
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 20px;
             margin-bottom: 16px;
         }
 
-        .stat-icon.orange { background: #FFF3E8; color: var(--accent); }
-        .stat-icon.gold   { background: #FFFBEB; color: var(--accent-gold); }
-        .stat-icon.green  { background: #F0FDF4; color: #22c55e; }
-        .stat-icon.blue   { background: #EFF6FF; color: #3b82f6; }
+        .stat-icon.orange {
+            background: #FFF3E8;
+            color: var(--accent);
+        }
+
+        .stat-icon.gold {
+            background: #FFFBEB;
+            color: var(--accent-gold);
+        }
+
+        .stat-icon.green {
+            background: #F0FDF4;
+            color: #22c55e;
+        }
+
+        .stat-icon.blue {
+            background: #EFF6FF;
+            color: #3b82f6;
+        }
 
         .stat-number {
             font-family: 'Playfair Display', serif;
@@ -285,7 +321,7 @@
 
         .dish-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 36px rgba(0,0,0,0.13);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.13);
         }
 
         .dish-card-img {
@@ -293,7 +329,9 @@
             height: 180px;
             object-fit: cover;
             background: #f5ede0;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 48px;
             color: #d4b896;
         }
@@ -413,7 +451,9 @@
             transition: all 0.2s;
         }
 
-        .btn-danger:hover { background: #dc2626; }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
 
         .btn-sm-edit {
             background: #EFF6FF;
@@ -463,8 +503,13 @@
             vertical-align: middle;
         }
 
-        .data-table tbody tr:hover { background: #fffaf5; }
-        .data-table tbody tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover {
+            background: #fffaf5;
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
 
         /* ── PAGE HEADERS ── */
         .page-header {
@@ -493,10 +538,14 @@
             margin-top: 20px;
         }
 
-        .alert-suggestion strong { color: var(--accent); }
+        .alert-suggestion strong {
+            color: var(--accent);
+        }
 
         /* ── FORM GROUP SPACING ── */
-        .form-group { margin-bottom: 20px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
         /* ── BADGE ── */
         .role-badge {
@@ -526,83 +575,91 @@
             font-weight: 500;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-3fpCfeXOfT6Arx5prXvH1z5MqK1s4g6v1jYRD/7kW48=" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-<!-- ══ SIDEBAR ══ -->
-<aside class="sidebar">
-    <div class="sidebar-brand">
-        <div class="logo-icon">🍽️</div>
-        <h1>La Mesa</h1>
-        <p>Restaurant System</p>
-    </div>
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon">🍽️</div>
+            <h1>La Mesa</h1>
+            <p>Restaurant System</p>
+        </div>
 
-    @auth
-        @if(Auth::user()->role === 'admin')
-            <div class="sidebar-section-label">Management</div>
-            <a href="{{ route('dishes.index') }}" class="nav-link-item {{ request()->routeIs('dishes.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-utensils"></i> Manage Dishes
-            </a>
-            <a href="{{ route('reservations.index') }}" class="nav-link-item {{ request()->routeIs('reservations.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-calendar-check"></i> Reservations
-            </a>
-            <a href="{{ route('transactions.index') }}" class="nav-link-item {{ request()->routeIs('transactions.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-receipt"></i> Transactions
-            </a>
-
-            <div class="sidebar-section-label">Analytics</div>
-            <a href="{{ route('reports.index') }}" class="nav-link-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-chart-bar"></i> Reports
-            </a>
-            <a href="{{ route('ai.index') }}" class="nav-link-item {{ request()->routeIs('ai.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Suggestion
-            </a>
-
-        @elseif(Auth::user()->role === 'customer')
-            <div class="sidebar-section-label">My Account</div>
-            <a href="{{ route('reservations.index') }}" class="nav-link-item {{ request()->routeIs('reservations.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-calendar-check"></i> My Reservations
-            </a>
-            <a href="{{ route('transactions.index') }}" class="nav-link-item {{ request()->routeIs('transactions.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-receipt"></i> My Transactions
-            </a>
-        @endif
-    @endauth
-
-    <div class="sidebar-footer">
         @auth
-        <div class="user-badge">
-            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
-            <div class="user-info">
-                <span>{{ Auth::user()->name }}</span>
-                <small class="role-badge">{{ Auth::user()->role }}</small>
+            @if (Auth::user()->role === 'admin')
+                <div class="sidebar-section-label">Management</div>
+                <a href="{{ route('dishes.index') }}"
+                    class="nav-link-item {{ request()->routeIs('dishes.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-utensils"></i> Manage Dishes
+                </a>
+                <a href="{{ route('reservations.index') }}"
+                    class="nav-link-item {{ request()->routeIs('reservations.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-calendar-check"></i> Reservations
+                </a>
+                <a href="{{ route('transactions.index') }}"
+                    class="nav-link-item {{ request()->routeIs('transactions.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-receipt"></i> Transactions
+                </a>
+
+                <div class="sidebar-section-label">Analytics</div>
+                <a href="{{ route('reports.index') }}"
+                    class="nav-link-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-chart-bar"></i> Reports
+                </a>
+                <a href="{{ route('ai.index') }}" class="nav-link-item {{ request()->routeIs('ai.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Suggestion
+                </a>
+            @elseif(Auth::user()->role === 'customer')
+                <div class="sidebar-section-label">My Account</div>
+                <a href="{{ route('reservations.index') }}"
+                    class="nav-link-item {{ request()->routeIs('reservations.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-calendar-check"></i> My Reservations
+                </a>
+                <a href="{{ route('transactions.index') }}"
+                    class="nav-link-item {{ request()->routeIs('transactions.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-receipt"></i> My Transactions
+                </a>
+            @endif
+        @endauth
+
+        <div class="sidebar-footer">
+            @auth
+                <div class="user-badge">
+                    <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                    <div class="user-info">
+                        <span>{{ Auth::user()->name }}</span>
+                        <small class="role-badge">{{ Auth::user()->role }}</small>
+                    </div>
+                </div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+                    </button>
+                </form>
+            @endauth
+        </div>
+    </aside>
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-title">
+                @yield('page-title', 'Dashboard')
+            </div>
+            <div class="topbar-date">
+                <span class="topbar-badge">🌟 {{ now()->format('l, F j, Y') }}</span>
             </div>
         </div>
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="logout-btn">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
-            </button>
-        </form>
-        @endauth
-    </div>
-</aside>
 
-<!-- ══ MAIN CONTENT ══ -->
-<div class="main-content">
-    <div class="topbar">
-        <div class="topbar-title">
-            @yield('page-title', 'Dashboard')
-        </div>
-        <div class="topbar-date">
-            <span class="topbar-badge">🌟 {{ now()->format('l, F j, Y') }}</span>
+        <div class="page-body">
+            @yield('content')
         </div>
     </div>
-
-    <div class="page-body">
-        @yield('content')
-    </div>
-</div>
-
 </body>
+
 </html>

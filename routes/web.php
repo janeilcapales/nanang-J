@@ -1,19 +1,38 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AIController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 
 // ── Public Routes ──────────────────────────────────────────────
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', function (Request $request) {
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended('/dashboard');
+    }
+
+    return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
+})->name('login.post');
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect()->route('login');
+})->name('logout');
 
 // ── Shared Auth Routes (any logged-in role) ─────────────────────
 Route::middleware(['auth'])->group(function () {
